@@ -1,61 +1,60 @@
+import os
 import ttkbootstrap as ttkb
 from ttkbootstrap.constants import *
-from tkinter import font as tkfont
+from tkinter import font as tkfont 
 
 # === Global Constants ===
-BGR_COLOR               = "#323232"
-PRIMARY_COLOR           = "#A06000"
-TEXT_COLOR              = "#DEDEDE"
-
 CANVAS_WIDTH            = 1024
 CANVAS_HEIGHT           = 600
-
 FRAME_BOUNDARY_WIDTH    = 4
-FRAME_BOUNDARY_ROUNDING = 8
 FRAME_PADDING           = 20
-
 FONT_SIZE               = 18
-FONT                    = "Helvetica"
+FONT                    = "Oxanium"
 
 # === App Setup ===
 app = ttkb.Window(themename="darkly")
 app.geometry(f"{CANVAS_WIDTH}x{CANVAS_HEIGHT}")
-app.configure(background=BGR_COLOR, padx=FRAME_PADDING, pady=FRAME_PADDING)
+
+# === Global Styling (after window!) ===
+style = ttkb.Style()
+colors = style.colors
+app.configure(
+    background=colors.bg,
+    padx=FRAME_PADDING,
+    pady=FRAME_PADDING,
+)
 
 # === Font Registration ===
-default_font = tkfont.Font(family=FONT, size=FONT_SIZE)
-app.option_add("*Font", default_font)
+tkfont.Font(root=app, name=FONT,       family=FONT, size=FONT_SIZE)
+tkfont.Font(root=app, name=FONT + "Bold", family=FONT, size=FONT_SIZE, weight="bold")
+app.option_add("*Font", FONT)
 
 # === Custom Frame Style ===
-style = ttkb.Style()
 style.configure("Dashboard.TLabelframe",
-    background=BGR_COLOR,
-    bordercolor=TEXT_COLOR,
+    background=colors.bg,
+    bordercolor=colors.fg,
     borderwidth=FRAME_BOUNDARY_WIDTH,
     relief="solid"
 )
 style.configure("Dashboard.TLabelframe.Label",
-    foreground=TEXT_COLOR,
-    background=BGR_COLOR,
+    foreground=colors.fg,
+    background=colors.bg,
     font=(FONT, FONT_SIZE, "bold")
 )
-
-
 style.configure("Dashboard.TFrame", 
-    background=BGR_COLOR,
+    background=colors.bg,
     borderwidth=0
 )
 
 # === Layout Container ===
-container = ttkb.Frame(app)
-container.configure(style="Dashboard.TFrame")
+container = ttkb.Frame(app, style="Dashboard.TFrame")
 container.pack(fill=BOTH, expand=True)
 
-# === Left and Right Containers ===
-left_container = ttkb.Frame(container, style="Dashboard.TFrame")
+# === Left and Right Panels ===
+left_container  = ttkb.Frame(container, style="Dashboard.TFrame")
 right_container = ttkb.Frame(container, style="Dashboard.TFrame")
 
-left_container.pack(side=LEFT, fill=BOTH, expand=True)
+left_container.pack(side=LEFT,  fill=BOTH, expand=True)
 right_container.pack(side=RIGHT, fill=BOTH, expand=True)
 
 # === Engine Frame (Left) ===
@@ -67,7 +66,7 @@ engine_frame = ttkb.Labelframe(
 )
 engine_frame.pack(fill=BOTH, expand=True, padx=10, pady=10)
 
-# === Batteries Frame ===
+# === Batteries Frame (Top Right) ===
 batteries_frame = ttkb.Labelframe(
     right_container,
     text=" Batteries ",
@@ -75,7 +74,7 @@ batteries_frame = ttkb.Labelframe(
 )
 batteries_frame.pack(fill=BOTH, expand=True, padx=10, pady=(10, 5))
 
-# === Tanks Frame ===
+# === Tanks Frame (Bottom Right) ===
 tanks_frame = ttkb.Labelframe(
     right_container,
     text=" Tanks ",
