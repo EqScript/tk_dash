@@ -39,7 +39,7 @@ style.configure("Dashboard.TLabelframe",
 style.configure("Dashboard.TLabelframe.Label",
     foreground=colors.fg,
     background=colors.bg,
-    font=(FONT, FONT_SIZE, "bold")
+    font=(FONT, FONT_SIZE, "normal")
 )
 style.configure("Dashboard.TFrame", 
     background=colors.bg,
